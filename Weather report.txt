@@ -1,0 +1,46 @@
+{
+  "name": "WeatherAlert",
+  "type": "object",
+  "properties": {
+    "location": {
+      "type": "string",
+      "description": "Location for weather"
+    },
+    "temperature": {
+      "type": "number"
+    },
+    "humidity": {
+      "type": "number"
+    },
+    "rain_probability": {
+      "type": "number"
+    },
+    "weather_description": {
+      "type": "string"
+    },
+    "ai_advice": {
+      "type": "string",
+      "description": "AI farming advice based on weather"
+    },
+    "alert_type": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "critical"
+      ],
+      "default": "info"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "en",
+        "hi"
+      ],
+      "default": "en"
+    }
+  },
+  "required": [
+    "location"
+  ]
+}
