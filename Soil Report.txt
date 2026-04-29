@@ -1,0 +1,59 @@
+{
+  "name": "SoilReport",
+  "type": "object",
+  "properties": {
+    "ph_value": {
+      "type": "number",
+      "description": "Soil pH value"
+    },
+    "moisture": {
+      "type": "number",
+      "description": "Soil moisture percentage"
+    },
+    "soil_type": {
+      "type": "string",
+      "enum": [
+        "clay",
+        "sandy",
+        "loamy",
+        "silt",
+        "peaty",
+        "chalky"
+      ],
+      "description": "Type of soil"
+    },
+    "soil_condition": {
+      "type": "string",
+      "description": "Acidic, Neutral, or Alkaline"
+    },
+    "fertilizer_suggestion": {
+      "type": "string",
+      "description": "Recommended fertilizer"
+    },
+    "crop_suggestion": {
+      "type": "string",
+      "description": "Recommended crop"
+    },
+    "irrigation_needed": {
+      "type": "boolean",
+      "description": "Whether irrigation is needed"
+    },
+    "full_report": {
+      "type": "string",
+      "description": "Full AI analysis report"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "en",
+        "hi"
+      ],
+      "default": "en"
+    }
+  },
+  "required": [
+    "ph_value",
+    "moisture",
+    "soil_type"
+  ]
+}
