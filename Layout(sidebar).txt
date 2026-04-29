@@ -1,0 +1,123 @@
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useLanguage } from '@/lib/LanguageContext';
+import { 
+  LayoutDashboard, FlaskConical, CloudSun, Camera, Mic, Bell, 
+  LogOut, Languages, Leaf, ChevronLeft, ChevronRight
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { base44 } from '@/api/base44Client';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+
+const navItems = [
+  { key: 'dashboard', path: '/', icon: LayoutDashboard, color: 'text-emerald-400' },
+  { key: 'soilAnalysis', path: '/soil', icon: FlaskConical, color: 'text-lime-400' },
+  { key: 'weather', path: '/weather', icon: CloudSun, color: 'text-sky-400' },
+  { key: 'cropDoctor', path: '/crop-doctor', icon: Camera, color: 'text-amber-400' },
+  { key: 'voiceAssistant', path: '/voice', icon: Mic, color: 'text-violet-400' },
+  { key: 'alerts', path: '/alerts', icon: Bell, color: 'text-rose-400' },
+];
+
+export default function Sidebar({ collapsed, setCollapsed }) {
+  const { t, lang, setLang } = useLanguage();
+  const location = useLocation();
+
+  return (
+    <aside className={cn(
+      "fixed left-0 top-0 h-full z-40 flex flex-col transition-all duration-300",
+      collapsed ? "w-16" : "w-64"
+    )}
+    style={{
+      background: 'linear-gradient(180deg, #0f2a1a 0%, #0a1f12 50%, #061510 100%)',
+      borderRight: '1px solid rgba(52,211,153,0.12)'
+    }}>
+
+      {/* Logo */}
+      <div className="p-4 flex items-center gap-3 border-b border-emerald-900/40">
+        <motion.div
+          whileHover={{ rotate: 15 }}
+          className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+          style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)', boxShadow: '0 0 12px rgba(22,163,74,0.5)' }}
+        >
+          <Leaf className="w-5 h-5 text-white" />
+        </motion.div>
+        {!collapsed && (
+          <div className="overflow-hidden">
+            <h1 className="text-lg font-bold text-white tracking-tight">{t('appName')}</h1>
+            <p className="text-[10px] text-emerald-400/70">{t('tagline')}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Nav */}
+      <nav className="flex-1 py-4 px-2 space-y-0.5 overflow-y-auto">
+        {navItems.map(item => {
+          const active = location.pathname === item.path;
+          return (
+            <Link key={item.key} to={item.path}>
+              <motion.div
+                whileHover={{ x: 3 }}
+                whileTap={{ scale: 0.97 }}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 relative",
+                  active
+                    ? "bg-emerald-500/20 text-white"
+                    : "text-white/50 hover:text-white/80 hover:bg-white/5"
+                )}
+              >
+                {active && (
+                  <motion.div
+                    layoutId="activeNav"
+                    className="absolute left-0 top-0 bottom-0 w-1 rounded-full bg-emerald-400"
+                    style={{ boxShadow: '0 0 8px rgba(52,211,153,0.8)' }}
+                  />
+                )}
+                <item.icon className={cn("w-5 h-5 shrink-0", active ? item.color : '')} />
+                {!collapsed && (
+                  <span className={cn("text-sm font-medium", active ? "text-white" : "")}>
+                    {t(item.key)}
+                  </span>
+                )}
+                {active && !collapsed && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-400"
+                    style={{ boxShadow: '0 0 6px rgba(52,211,153,1)' }}
+                  />
+                )}
+              </motion.div>
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* Footer */}
+      <div className="p-3 border-t border-emerald-900/40 space-y-1">
+        <motion.button
+          whileHover={{ x: 3 }}
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-white/50 hover:text-white hover:bg-white/5 transition-colors text-sm"
+          onClick={() => setLang(lang === 'en' ? 'hi' : 'en')}
+        >
+          <Languages className="w-4 h-4 shrink-0" />
+          {!collapsed && <span>{lang === 'en' ? 'हिंदी' : 'English'}</span>}
+        </motion.button>
+        <motion.button
+          whileHover={{ x: 3 }}
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-white/50 hover:text-rose-400 hover:bg-rose-500/10 transition-colors text-sm"
+          onClick={() => base44.auth.logout()}
+        >
+          <LogOut className="w-4 h-4 shrink-0" />
+          {!collapsed && <span>{t('logout')}</span>}
+        </motion.button>
+        <button
+          className="w-full flex items-center justify-center py-1 text-white/30 hover:text-white/60 transition-colors"
+          onClick={() => setCollapsed(!collapsed)}
+        >
+          {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+        </button>
+      </div>
+    </aside>
+  );
+}
