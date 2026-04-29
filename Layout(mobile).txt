@@ -1,0 +1,42 @@
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useLanguage } from '@/lib/LanguageContext';
+import { LayoutDashboard, FlaskConical, CloudSun, Camera, Mic, Bell } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+const navItems = [
+  { key: 'dashboard', path: '/', icon: LayoutDashboard },
+  { key: 'soilAnalysis', path: '/soil', icon: FlaskConical },
+  { key: 'weather', path: '/weather', icon: CloudSun },
+  { key: 'cropDoctor', path: '/crop-doctor', icon: Camera },
+  { key: 'voiceAssistant', path: '/voice', icon: Mic },
+  { key: 'alerts', path: '/alerts', icon: Bell },
+];
+
+export default function MobileNav() {
+  const { t } = useLanguage();
+  const location = useLocation();
+
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50 md:hidden">
+      <div className="flex items-center justify-around py-2">
+        {navItems.map(item => {
+          const active = location.pathname === item.path;
+          return (
+            <Link key={item.key} to={item.path} className="flex flex-col items-center gap-0.5 px-1">
+              <div className={cn(
+                "p-1.5 rounded-lg transition-colors",
+                active ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+              )}>
+                <item.icon className="w-5 h-5" />
+              </div>
+              <span className={cn("text-[10px]", active ? "text-primary font-semibold" : "text-muted-foreground")}>
+                {t(item.key).split(' ')[0]}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
