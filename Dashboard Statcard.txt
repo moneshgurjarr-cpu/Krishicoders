@@ -1,0 +1,51 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+
+const gradients = {
+  'bg-emerald-500': 'linear-gradient(135deg, #10b981, #059669)',
+  'bg-amber-500': 'linear-gradient(135deg, #f59e0b, #d97706)',
+  'bg-sky-500': 'linear-gradient(135deg, #0ea5e9, #0284c7)',
+};
+
+const glows = {
+  'bg-emerald-500': 'rgba(16,185,129,0.25)',
+  'bg-amber-500': 'rgba(245,158,11,0.25)',
+  'bg-sky-500': 'rgba(14,165,233,0.25)',
+};
+
+export default function StatCard({ icon: Icon, label, value, color }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      whileHover={{ y: -4, scale: 1.02 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      className="relative overflow-hidden rounded-2xl border border-white/10 p-6 cursor-default"
+      style={{
+        background: 'rgba(255,255,255,0.7)',
+        backdropFilter: 'blur(12px)',
+        boxShadow: `0 4px 24px ${glows[color] || 'rgba(0,0,0,0.1)'}`,
+      }}
+    >
+      <div
+        className="absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-15"
+        style={{ background: gradients[color] || color }}
+      />
+      <div
+        className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-lg"
+        style={{ background: gradients[color] || color }}
+      >
+        <Icon className="w-6 h-6 text-white" />
+      </div>
+      <motion.p
+        key={value}
+        initial={{ scale: 1.2, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="text-3xl font-bold text-foreground"
+      >
+        {value}
+      </motion.p>
+      <p className="text-sm text-muted-foreground mt-1 font-medium">{label}</p>
+    </motion.div>
+  );
+}
