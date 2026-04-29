@@ -1,0 +1,38 @@
+{
+  "name": "CropReport",
+  "type": "object",
+  "properties": {
+    "image_url": {
+      "type": "string",
+      "description": "Uploaded crop image URL"
+    },
+    "disease": {
+      "type": "string",
+      "description": "Detected disease name"
+    },
+    "confidence": {
+      "type": "string",
+      "description": "Confidence score"
+    },
+    "solution": {
+      "type": "string",
+      "description": "Recommended solution"
+    },
+    "full_report": {
+      "type": "string",
+      "description": "Full AI diagnosis report"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "en",
+        "hi"
+      ],
+      "default": "en"
+    }
+  },
+  "required": [
+    "image_url"
+  ]
+}
+
